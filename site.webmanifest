@@ -1,0 +1,14 @@
+{
+  "name": "Sudoku Nova",
+  "short_name": "Sudoku Nova",
+  "description": "A quiet, focused Sudoku for the modern phone. Classic, Killer, Cross Math, Math Match, Square Math — daily puzzles, smart hints, built-in strategies.",
+  "icons": [
+    { "src": "/favicon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/favicon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#C65D3A",
+  "background_color": "#F7F4EC",
+  "display": "browser",
+  "start_url": "/",
+  "categories": ["games", "puzzle"]
+}
