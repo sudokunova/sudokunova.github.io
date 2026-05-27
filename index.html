@@ -1,219 +1,458 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Sudoku Nova — a quiet, focused Sudoku for iPhone, iPad, and Android. Daily puzzles, killer & cross-math variants, and a pencil-on-paper feel.">
-  <meta name="theme-color" content="#F7F4EC">
-  <title>Sudoku Nova — pencil & paper, reimagined</title>
-  <style>
-    :root {
-      --bg: #F7F4EC;
-      --ink: #1A1A1A;
-      --muted: rgba(0,0,0,0.55);
-      --line: rgba(0,0,0,0.08);
-      --accent: #C65D3A;
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Sudoku Nova — a quiet, focused Sudoku for iPhone, iPad and Android. Classic, Killer, Cross Math, Math Match, Square Math. Daily puzzles, smart hints, built-in strategies.">
+<meta name="theme-color" content="#F7F4EC">
+<title>Sudoku Nova — Pencil &amp; paper, reimagined</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ─────────────── Tokens ─────────────── */
+  :root{
+    --bg:#F7F4EC; --surface:#FFFFFF; --surface-2:#FBF9F2;
+    --ink:#1A1A1A; --muted:rgba(26,26,26,0.55); --hairline:rgba(26,26,26,0.10);
+    --accent:#C65D3A; --accent-soft:rgba(198,93,58,0.10);
+    --glow:0 60px 140px -30px rgba(198,93,58,0.20), 0 30px 60px -20px rgba(0,0,0,0.10);
+    --shot-glow:0 30px 80px -20px rgba(198,93,58,0.18), 0 20px 40px -15px rgba(0,0,0,0.12);
+    --final-grad:linear-gradient(180deg,var(--bg) 0%,#F0E3D8 100%);
+    --nav-blur:rgba(247,244,236,0.75);
+    --grid-tint:rgba(26,26,26,0.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0A0A0A; --surface:#141414; --surface-2:#1C1C1C;
+      --ink:#F5F2EA; --muted:rgba(245,242,234,0.55); --hairline:rgba(245,242,234,0.08);
+      --accent:#E67451; --accent-soft:rgba(230,116,81,0.12);
+      --glow:0 60px 140px -30px rgba(230,116,81,0.25), 0 30px 60px -20px rgba(0,0,0,0.8);
+      --shot-glow:0 30px 80px -20px rgba(230,116,81,0.30), 0 20px 40px -15px rgba(0,0,0,0.6);
+      --final-grad:linear-gradient(180deg,var(--bg) 0%,#1a0d08 100%);
+      --nav-blur:rgba(10,10,10,0.7);
+      --grid-tint:rgba(245,242,234,0.03);
     }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0F0F0F;
-        --ink: #F5F2EA;
-        --muted: rgba(255,255,255,0.55);
-        --line: rgba(255,255,255,0.08);
-      }
-    }
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", sans-serif;
-      background: var(--bg);
-      color: var(--ink);
-      line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
-    }
-    .wrap {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 80px 32px 64px;
-    }
-    header { text-align: center; margin-bottom: 56px; }
-    h1 {
-      font-size: 48px;
-      font-weight: 900;
-      letter-spacing: -1px;
-      margin: 24px 0 8px;
-    }
-    h1 .dot { color: var(--accent); }
-    .tagline {
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 2.6px;
-      text-transform: uppercase;
-    }
-    .logo {
-      width: 96px; height: 96px;
-      background: var(--bg);
-      border: 2px solid var(--ink);
-      border-radius: 22px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-    .logo::before, .logo::after,
-    .logo > span::before, .logo > span::after {
-      content: ''; position: absolute; background: var(--ink);
-    }
-    .logo::before { width: 3px; height: 60%; top: 20%; left: calc(50% - 12px); }
-    .logo::after  { width: 3px; height: 60%; top: 20%; left: calc(50% + 9px); }
-    .logo > span { position: absolute; inset: 0; }
-    .logo > span::before { height: 3px; width: 60%; left: 20%; top: calc(50% - 12px); }
-    .logo > span::after  { height: 3px; width: 60%; left: 20%; top: calc(50% + 9px); }
-    .logo .accent {
-      width: 18px; height: 18px;
-      background: var(--accent);
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 1;
-    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0A0A0A; --surface:#141414; --surface-2:#1C1C1C;
+    --ink:#F5F2EA; --muted:rgba(245,242,234,0.55); --hairline:rgba(245,242,234,0.08);
+    --accent:#E67451; --accent-soft:rgba(230,116,81,0.12);
+    --glow:0 60px 140px -30px rgba(230,116,81,0.25), 0 30px 60px -20px rgba(0,0,0,0.8);
+    --shot-glow:0 30px 80px -20px rgba(230,116,81,0.30), 0 20px 40px -15px rgba(0,0,0,0.6);
+    --final-grad:linear-gradient(180deg,var(--bg) 0%,#1a0d08 100%);
+    --nav-blur:rgba(10,10,10,0.7);
+    --grid-tint:rgba(245,242,234,0.03);
+  }
+  :root[data-theme="light"]{
+    --bg:#F7F4EC; --surface:#FFFFFF; --surface-2:#FBF9F2;
+    --ink:#1A1A1A; --muted:rgba(26,26,26,0.55); --hairline:rgba(26,26,26,0.10);
+    --accent:#C65D3A; --accent-soft:rgba(198,93,58,0.10);
+    --glow:0 60px 140px -30px rgba(198,93,58,0.20), 0 30px 60px -20px rgba(0,0,0,0.10);
+    --shot-glow:0 30px 80px -20px rgba(198,93,58,0.18), 0 20px 40px -15px rgba(0,0,0,0.12);
+    --final-grad:linear-gradient(180deg,var(--bg) 0%,#F0E3D8 100%);
+    --nav-blur:rgba(247,244,236,0.75);
+    --grid-tint:rgba(26,26,26,0.04);
+  }
 
-    section { margin-bottom: 56px; }
-    h2 {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2.4px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin: 0 0 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--line);
-    }
-    p { margin: 0 0 16px; }
-    .lede { font-size: 19px; }
-    ul.features {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    ul.features li {
-      padding: 14px 0;
-      border-bottom: 1px solid var(--line);
-      display: flex;
-      gap: 14px;
-      align-items: baseline;
-    }
-    ul.features li:last-child { border-bottom: none; }
-    ul.features .marker {
-      color: var(--accent);
-      font-weight: 800;
-      min-width: 24px;
-    }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;font-size:16px;transition:background 0.2s,color 0.2s;overflow-x:hidden}
+  .mono{font-family:'JetBrains Mono',monospace}
 
-    .stores {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 8px;
-    }
-    .store {
-      flex: 1 1 220px;
-      padding: 14px 18px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      text-decoration: none;
-      color: var(--ink);
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      transition: border-color 0.15s ease, transform 0.15s ease;
-    }
-    .store:hover {
-      border-color: var(--accent);
-      transform: translateY(-1px);
-    }
-    .store .label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1.6px;
-      color: var(--muted);
-      text-transform: uppercase;
-    }
-    .store .name {
-      font-size: 17px;
-      font-weight: 700;
-    }
+  /* ─────────────── Nav ─────────────── */
+  nav.top{position:sticky;top:0;z-index:50;background:var(--nav-blur);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--hairline);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+  nav.top .brand{font-weight:800;font-size:18px;letter-spacing:-0.4px}
+  nav.top .brand .dot{color:var(--accent)}
+  nav.top .links{display:flex;gap:32px;align-items:center}
+  nav.top .links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
+  nav.top .links a:hover{color:var(--ink)}
+  nav.top .links a.cta{background:var(--accent);color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;transition:transform 0.15s,background 0.2s,color 0.2s}
+  nav.top .links a.cta:hover{background:var(--ink);color:var(--bg);transform:translateY(-1px)}
+  .theme-toggle{width:36px;height:36px;border-radius:50%;border:1px solid var(--hairline);background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:color 0.15s,border-color 0.15s;padding:0}
+  .theme-toggle:hover{color:var(--accent);border-color:var(--accent)}
+  .theme-toggle svg{width:16px;height:16px;display:block}
+  .theme-toggle .icon-sun{display:none}
+  .theme-toggle .icon-moon{display:block}
+  :root[data-theme="dark"] .theme-toggle .icon-sun{display:block}
+  :root[data-theme="dark"] .theme-toggle .icon-moon{display:none}
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]) .theme-toggle .icon-sun{display:block}
+    :root:not([data-theme="light"]) .theme-toggle .icon-moon{display:none}
+  }
 
-    .links {
-      display: flex;
-      gap: 18px;
-      justify-content: center;
-      flex-wrap: wrap;
-      padding-top: 32px;
-      border-top: 1px solid var(--line);
-    }
-    .links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 13px;
-    }
-    .links a:hover { color: var(--accent); }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px}
 
-    footer {
-      text-align: center;
-      margin-top: 48px;
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 1.4px;
-    }
-  </style>
+  /* ─────────────── Hero ─────────────── */
+  .hero{position:relative;padding:96px 0 64px;overflow:hidden}
+  /* Faint sudoku grid background, like the screenshots */
+  .hero::before{
+    content:'';position:absolute;inset:0;z-index:0;opacity:0.5;
+    background-image:
+      linear-gradient(to right, var(--grid-tint) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-tint) 1px, transparent 1px);
+    background-size:120px 120px;
+    pointer-events:none;
+  }
+  .hero .wrap{position:relative;z-index:1}
+  .hero-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:64px;align-items:center}
+  .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid var(--hairline);border-radius:999px;font-size:12px;color:var(--muted);margin-bottom:28px;background:var(--surface);width:fit-content}
+  .badge .pulse{width:8px;height:8px;background:var(--accent);border-radius:50%;animation:pulse 2s ease-out infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 var(--accent-soft)}70%{box-shadow:0 0 0 12px rgba(0,0,0,0)}100%{box-shadow:0 0 0 0 rgba(0,0,0,0)}}
+  .hero h1{font-size:clamp(48px,7vw,84px);font-weight:800;letter-spacing:-2.5px;line-height:1.02;margin-bottom:24px;max-width:14ch}
+  .hero h1 .accent{color:var(--accent)}
+  .hero .lede{font-size:19px;color:var(--muted);max-width:50ch;line-height:1.55;margin-bottom:36px}
+  .actions{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px;transition:transform 0.15s,background 0.2s,border-color 0.2s,color 0.2s}
+  .btn-primary{background:var(--ink);color:var(--bg)}
+  .btn-primary:hover{transform:translateY(-1px);background:var(--accent);color:var(--ink)}
+  .btn-secondary{background:transparent;color:var(--ink);border:1px solid var(--hairline)}
+  .btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+
+  .hero-shot{position:relative;display:flex;justify-content:center;align-items:center}
+  .hero-shot img{display:block;max-width:100%;width:auto;height:auto;max-height:760px;border-radius:36px;box-shadow:var(--glow);transition:transform 0.3s ease}
+  .hero-shot:hover img{transform:translateY(-4px)}
+
+  /* ─────────────── Section ─────────────── */
+  section{padding:96px 0;border-top:1px solid var(--hairline);position:relative}
+  .eyebrow{font-size:11px;letter-spacing:2.6px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:14px}
+  h2{font-size:clamp(36px,5vw,56px);font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:20px;max-width:18ch}
+  h2 .accent{color:var(--accent)}
+  .sec-intro{font-size:18px;color:var(--muted);max-width:60ch;line-height:1.55;margin-bottom:56px}
+
+  /* ─────────────── Feature rows ─────────────── */
+  .feature-row{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;padding:48px 0}
+  .feature-row + .feature-row{border-top:1px solid var(--hairline)}
+  .feature-row.flip > .feature-text{order:2}
+  .feature-row.flip > .feature-shot{order:1}
+  .feature-text .num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);font-weight:700;letter-spacing:1.8px;margin-bottom:14px}
+  .feature-text h3{font-size:38px;font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:16px;max-width:14ch}
+  .feature-text h3 .accent{color:var(--accent)}
+  .feature-text p{font-size:17px;color:var(--muted);line-height:1.6;margin-bottom:24px;max-width:46ch}
+  .feature-text .tags{list-style:none;padding:0;display:flex;gap:10px;flex-wrap:wrap}
+  .feature-text .tags li{font-size:12px;color:var(--ink);background:var(--surface);padding:6px 12px;border-radius:6px;border:1px solid var(--hairline);font-weight:500}
+  .feature-shot{display:flex;justify-content:center}
+  .feature-shot img{display:block;max-width:100%;height:auto;max-height:680px;border-radius:32px;box-shadow:var(--shot-glow)}
+
+  /* ─────────────── Auto-rotating tour carousel ─────────────── */
+  .tour-viewport{
+    overflow:hidden;
+    position:relative;
+    padding:24px 0 40px;
+    /* Soft fade on the left/right edges so screenshots ease in & out */
+    -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 80px, #000 calc(100% - 80px), transparent 100%);
+    mask-image:linear-gradient(90deg, transparent 0, #000 80px, #000 calc(100% - 80px), transparent 100%);
+  }
+  .tour-track{
+    display:flex;
+    gap:24px;
+    width:max-content;
+    animation:tour-scroll 60s linear infinite;
+    will-change:transform;
+  }
+  .tour-viewport:hover .tour-track{animation-play-state:paused}
+  @keyframes tour-scroll{
+    from{transform:translateX(0)}
+    to{transform:translateX(calc(-50% - 12px))} /* 12px = half the gap so loop is seamless */
+  }
+  @media (prefers-reduced-motion: reduce){
+    .tour-track{animation:none;transform:translateX(0);justify-content:center;flex-wrap:wrap;width:auto}
+  }
+  .tour-card{flex:0 0 auto;width:280px;transition:transform 0.25s}
+  .tour-card:hover{transform:translateY(-6px) scale(1.02)}
+  .tour-card img{display:block;width:100%;height:auto;border-radius:24px;box-shadow:var(--shot-glow)}
+
+  /* ─────────────── Variants section ─────────────── */
+  .variants-intro{text-align:center;max-width:680px;margin:0 auto 56px}
+  .variants-intro .eyebrow{margin-bottom:14px}
+  .variants-intro h2{margin:0 auto 20px}
+  .variants-intro p{font-size:18px;color:var(--muted);line-height:1.55}
+  .variants-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--hairline);border:1px solid var(--hairline);border-radius:16px;overflow:hidden;margin-bottom:64px}
+  .vcard{background:var(--surface);padding:28px 24px;display:flex;flex-direction:column;gap:8px;transition:background 0.15s}
+  .vcard:hover{background:var(--surface-2)}
+  .vcard .mark{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--accent);font-size:12px;letter-spacing:1.5px}
+  .vcard h4{font-size:18px;font-weight:700;margin:4px 0}
+  .vcard p{font-size:13px;color:var(--muted);line-height:1.5}
+
+  /* ─────────────── Stats strip ─────────────── */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;padding:64px 0;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+  .stat{text-align:left}
+  .stat .num{font-size:48px;font-weight:800;letter-spacing:-1.5px;font-family:'JetBrains Mono',monospace;color:var(--accent);line-height:1}
+  .stat .lbl{font-size:13px;color:var(--muted);margin-top:8px}
+
+  /* ─────────────── Pull quote ─────────────── */
+  .pullquote{text-align:center;padding:120px 32px;border-top:1px solid var(--hairline)}
+  .pullquote blockquote{font-size:clamp(28px,4.2vw,44px);font-weight:600;letter-spacing:-1px;line-height:1.25;max-width:24ch;margin:0 auto;color:var(--ink)}
+  .pullquote blockquote .accent{color:var(--accent)}
+  .pullquote .cite{display:block;margin-top:28px;font-size:11px;letter-spacing:2.4px;text-transform:uppercase;color:var(--muted);font-weight:700}
+
+  /* ─────────────── Final CTA ─────────────── */
+  .final{text-align:center;padding:140px 32px;background:var(--final-grad);border-top:1px solid var(--hairline);border-bottom:none}
+  .final h2{font-size:clamp(48px,8vw,84px);margin:0 auto 24px;letter-spacing:-2.5px;max-width:none}
+  .final h2 .accent{color:var(--accent)}
+  .final .lede{font-size:18px;color:var(--muted);max-width:46ch;margin:0 auto 48px}
+  .final .actions{justify-content:center}
+
+  /* ─────────────── Footer ─────────────── */
+  footer{padding:48px 32px;border-top:1px solid var(--hairline);text-align:center;font-size:13px;color:var(--muted)}
+  footer .row{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+  footer a{color:var(--muted);text-decoration:none}
+  footer a:hover{color:var(--accent)}
+
+  /* ─────────────── Responsive ─────────────── */
+  @media (max-width:900px){
+    nav.top{padding:14px 20px}
+    nav.top .links{display:none}
+    .hero{padding:64px 0 40px}
+    .hero-grid{grid-template-columns:1fr;gap:48px}
+    .hero-shot img{max-height:600px}
+    .feature-row{grid-template-columns:1fr;gap:32px;padding:32px 0}
+    .feature-row.flip > .feature-text{order:0}
+    .feature-row.flip > .feature-shot{order:0}
+    .feature-shot img{max-height:580px}
+    .stats{grid-template-columns:repeat(2,1fr);gap:24px}
+    .stat .num{font-size:36px}
+    section{padding:64px 0}
+  }
+</style>
+<script>
+  (function(){try{var s=localStorage.getItem('theme');if(s==='dark'||s==='light')document.documentElement.setAttribute('data-theme',s);}catch(e){}})();
+</script>
 </head>
 <body>
+
+<nav class="top">
+  <div class="brand">Sudoku<span class="dot">.</span></div>
+  <div class="links">
+    <a href="#daily">Daily</a>
+    <a href="#hints">Hints</a>
+    <a href="#strategies">Strategies</a>
+    <a href="#variants">Variants</a>
+    <a class="cta" href="#download">Get the app</a>
+  </div>
+  <button class="theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+  </button>
+</nav>
+
+<!-- ─────────────── HERO ─────────────── -->
+<header class="hero">
   <div class="wrap">
-    <header>
-      <div class="logo"><span></span><div class="accent"></div></div>
-      <h1>Sudoku<span class="dot">.</span></h1>
-      <div class="tagline">Set your pencil · stay a while</div>
-    </header>
-
-    <section>
-      <p class="lede">A quiet, focused Sudoku for the modern phone — built around pencil-on-paper feel, daily puzzles, and a few thoughtful variants for when you want a different kind of challenge.</p>
-    </section>
-
-    <section>
-      <h2>What's inside</h2>
-      <ul class="features">
-        <li><span class="marker">01</span><span><strong>Classic Sudoku</strong> — Easy through Expert. Smart notes, mistake tracking (3 strikes), unlimited undo.</span></li>
-        <li><span class="marker">02</span><span><strong>Daily puzzle</strong> — One handcrafted board per day. Streaks, leaderboards, awards.</span></li>
-        <li><span class="marker">03</span><span><strong>Variants</strong> — Killer, Cross Math, Math Match, Square Math. Same calm UI, new puzzles to lose yourself in.</span></li>
-        <li><span class="marker">04</span><span><strong>Built for both phones &amp; tablets</strong> — Optimized layouts for iPad and large Android tablets.</span></li>
-        <li><span class="marker">05</span><span><strong>No noise</strong> — Optional sounds, optional haptics, optional ads. Your settings, your pace.</span></li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>Get the app</h2>
-      <div class="stores">
-        <a class="store" href="#" rel="noopener">
-          <span class="label">Coming soon</span>
-          <span class="name">App Store</span>
-        </a>
-        <a class="store" href="#" rel="noopener">
-          <span class="label">Coming soon</span>
-          <span class="name">Google Play</span>
-        </a>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="badge"><span class="pulse"></span>New · iOS &amp; Android · Free with optional ads</div>
+        <h1>Pencil &amp; paper, <span class="accent">reimagined.</span></h1>
+        <p class="lede">A quiet, focused Sudoku for the modern phone. Five modes, a daily handcrafted puzzle, a built-in strategies playbook — without the noise.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#">Download for iOS →</a>
+          <a class="btn btn-secondary" href="#">Get on Google Play</a>
+        </div>
       </div>
-    </section>
+      <div class="hero-shot">
+        <img src="screenshots/iphone-1242x2688-01-hero.png" alt="Sudoku Nova splash screen" loading="eager">
+      </div>
+    </div>
+  </div>
+</header>
 
-    <div class="links">
-      <a href="/privacy.html">Privacy</a>
-      <a href="/terms.html">Terms</a>
-      <a href="mailto:y.farag84@icloud.com">Contact</a>
-      <a href="/app-ads.txt">app-ads.txt</a>
+<!-- ─────────────── QUICK TOUR — strip of all screenshots ─────────────── -->
+<section id="tour">
+  <div class="wrap">
+    <div class="eyebrow">The tour</div>
+    <h2>Nine screens. <span class="accent">One quiet idea.</span></h2>
+    <p class="sec-intro">Scroll through the app at a glance. Every screen is designed around the same principle — calm by default, configurable when you want it.</p>
+  </div>
+  <div class="tour-viewport">
+    <div class="tour-track">
+      <!-- First set -->
+      <div class="tour-card"><img src="screenshots/iphone-1242x2688-02-daily.png" alt="Daily challenge home screen" loading="lazy"></div>
+      <div class="tour-card"><img src="screenshots/iphone-1242x2688-03-play.png" alt="Classic Sudoku gameplay" loading="lazy"></div>
+      <div class="tour-card"><img src="screenshots/iphone-1242x2688-04-hint.png" alt="Step-by-step hints" loading="lazy"></div>
+      <div class="tour-card"><img src="screenshots/iphone-1242x2688-05-strategies.png" alt="Strategies playbook" loading="lazy"></div>
+      <div class="tour-card"><img src="screenshots/iphone-1242x2688-06-explore.png" alt="Explore — five game modes" loading="lazy"></div>
+      <div class="tour-card"><img src="screenshots/iphone-1242x2688-07-killer.png" alt="Killer Sudoku" loading="lazy"></div>
+      <div class="tour-card"><img src="screenshots/iphone-1242x2688-08-mathmatch.png" alt="Math Match" loading="lazy"></div>
+      <div class="tour-card"><img src="screenshots/iphone-1242x2688-09-awards.png" alt="Awards & weekly events" loading="lazy"></div>
+      <!-- Duplicate (aria-hidden) for seamless loop -->
+      <div class="tour-card" aria-hidden="true"><img src="screenshots/iphone-1242x2688-02-daily.png" alt="" loading="lazy"></div>
+      <div class="tour-card" aria-hidden="true"><img src="screenshots/iphone-1242x2688-03-play.png" alt="" loading="lazy"></div>
+      <div class="tour-card" aria-hidden="true"><img src="screenshots/iphone-1242x2688-04-hint.png" alt="" loading="lazy"></div>
+      <div class="tour-card" aria-hidden="true"><img src="screenshots/iphone-1242x2688-05-strategies.png" alt="" loading="lazy"></div>
+      <div class="tour-card" aria-hidden="true"><img src="screenshots/iphone-1242x2688-06-explore.png" alt="" loading="lazy"></div>
+      <div class="tour-card" aria-hidden="true"><img src="screenshots/iphone-1242x2688-07-killer.png" alt="" loading="lazy"></div>
+      <div class="tour-card" aria-hidden="true"><img src="screenshots/iphone-1242x2688-08-mathmatch.png" alt="" loading="lazy"></div>
+      <div class="tour-card" aria-hidden="true"><img src="screenshots/iphone-1242x2688-09-awards.png" alt="" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── FEATURE: DAILY ─────────────── -->
+<section id="daily">
+  <div class="wrap">
+    <div class="eyebrow">The headline feature</div>
+    <h2>A small daily ritual, <span class="accent">on your terms.</span></h2>
+    <p class="sec-intro">One handcrafted puzzle every day. Streaks, stats, a rotating weekly featured series — and absolutely no 9pm push notifications. Skip a day if you want. The grid will wait.</p>
+
+    <div class="feature-row">
+      <div class="feature-text">
+        <div class="num">№ 01</div>
+        <h3>Featured this week. <span class="accent">A new daily.</span></h3>
+        <p>The home screen surfaces what's on right now — the daily puzzle, this week's featured event series, your stats, and a one-tap path back to your last game.</p>
+        <ul class="tags"><li>Daily puzzle</li><li>Streaks</li><li>Featured events</li><li>Quick start</li></ul>
+      </div>
+      <div class="feature-shot"><img src="screenshots/iphone-1242x2688-02-daily.png" alt="Daily challenge home" loading="lazy"></div>
     </div>
 
-    <footer>SUDOKU NOVA · A DAILY RITUAL</footer>
+    <div class="feature-row flip">
+      <div class="feature-text">
+        <div class="num">№ 02</div>
+        <h3>The board, <span class="accent">out of your way.</span></h3>
+        <p>Four difficulties from Easy through Expert. Smart pencil notes auto-remove when you place a value. Mistake tracking with three strikes, or unlimited if that's not your thing.</p>
+        <ul class="tags"><li>4 difficulties</li><li>Smart notes</li><li>3-strike mode</li><li>Unlimited undo</li></ul>
+      </div>
+      <div class="feature-shot"><img src="screenshots/iphone-1242x2688-03-play.png" alt="Classic Sudoku gameplay" loading="lazy"></div>
+    </div>
   </div>
+</section>
+
+<!-- ─────────────── HINTS + STRATEGIES ─────────────── -->
+<section id="hints">
+  <div class="wrap">
+    <div class="eyebrow">Learn as you play</div>
+    <h2>Stuck? <span class="accent">We don't just hand you the answer.</span></h2>
+    <p class="sec-intro">Most apps give you a hint by filling in a cell. We show you the technique — which cells to look at, why this digit is forced, what to scan for next time.</p>
+
+    <div class="feature-row">
+      <div class="feature-text">
+        <div class="num">№ 03</div>
+        <h3>Step-by-step hints, <span class="accent">not spoilers.</span></h3>
+        <p>Highlights the row, column and box that prove the next move. Each hint walks you through the reasoning. After a few you'll start spotting the patterns on your own.</p>
+        <ul class="tags"><li>Logical hints</li><li>Visual scan</li><li>Pattern reveal</li><li>2/round free</li></ul>
+      </div>
+      <div class="feature-shot"><img src="screenshots/iphone-1242x2688-04-hint.png" alt="Step-by-step hint highlighting peers" loading="lazy"></div>
+    </div>
+
+    <div class="feature-row flip" id="strategies">
+      <div class="feature-text">
+        <div class="num">№ 04</div>
+        <h3>A built-in <span class="accent">strategies playbook.</span></h3>
+        <p>From Hidden Singles to Naked Pairs to X-Wings — every Sudoku technique is documented, ranked by difficulty, and illustrated with worked examples. Learn one a week, become unstoppable.</p>
+        <ul class="tags"><li>Beginner → Expert</li><li>Worked examples</li><li>Searchable</li><li>Color-coded</li></ul>
+      </div>
+      <div class="feature-shot"><img src="screenshots/iphone-1242x2688-05-strategies.png" alt="Strategies playbook with illustrated Naked Pair example" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── PULL QUOTE ─────────────── -->
+<section class="pullquote">
+  <blockquote>The grid waits.<br>It doesn't <span class="accent">nag.</span></blockquote>
+  <span class="cite">Sudoku Nova · Our design philosophy</span>
+</section>
+
+<!-- ─────────────── VARIANTS ─────────────── -->
+<section id="variants">
+  <div class="wrap">
+    <div class="variants-intro">
+      <div class="eyebrow">Game modes</div>
+      <h2>Five flavors, <span class="accent">one quiet UI.</span></h2>
+      <p>When classic Sudoku isn't quite right, try a variant. Same calm presentation, different brain workout.</p>
+    </div>
+
+    <div class="variants-grid">
+      <div class="vcard"><div class="mark">I</div><h4>Classic Sudoku</h4><p>The 9×9 puzzle you know and love.</p></div>
+      <div class="vcard"><div class="mark">II</div><h4>Killer Sudoku</h4><p>Cages with sum clues. Sharper deduction.</p></div>
+      <div class="vcard"><div class="mark">III</div><h4>Cross Math</h4><p>Fill cells so every run hits its sum. Kakuro vibes.</p></div>
+      <div class="vcard"><div class="mark">IV</div><h4>Math Match</h4><p>Pair cells whose numbers add up to the target.</p></div>
+      <div class="vcard"><div class="mark">V</div><h4>Square Math</h4><p>Sudoku where clues show the square of the answer.</p></div>
+    </div>
+
+    <div class="feature-row">
+      <div class="feature-text">
+        <div class="num">№ 05</div>
+        <h3>Killer Sudoku, <span class="accent">without mercy.</span></h3>
+        <p>No starting numbers — just dotted regions with target sums. Each cage must hit its sum, with no repeats. Pure deduction from a blank canvas. Hard mode is where this variant shines.</p>
+      </div>
+      <div class="feature-shot"><img src="screenshots/iphone-1242x2688-07-killer.png" alt="Killer Sudoku, Hard difficulty" loading="lazy"></div>
+    </div>
+
+    <div class="feature-row flip">
+      <div class="feature-text">
+        <div class="num">№ 06</div>
+        <h3>Math Match. <span class="accent">Beat the clock.</span></h3>
+        <p>Make the target by pairing cells. A brisk warm-up or a serious sprint — your call. The fastest of the variants, perfect for queue time.</p>
+      </div>
+      <div class="feature-shot"><img src="screenshots/iphone-1242x2688-08-mathmatch.png" alt="Math Match — Make 10" loading="lazy"></div>
+    </div>
+
+    <div class="feature-row">
+      <div class="feature-text">
+        <div class="num">№ 07</div>
+        <h3>More ways <span class="accent">to play.</span></h3>
+        <p>The Explore tab keeps the menu of variants one tap away. Try a different mode on a coffee break. The same elegant board logic underneath, every time.</p>
+      </div>
+      <div class="feature-shot"><img src="screenshots/iphone-1242x2688-06-explore.png" alt="Explore — all five game modes" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── EVENTS / AWARDS ─────────────── -->
+<section id="events">
+  <div class="wrap">
+    <div class="feature-row">
+      <div class="feature-text">
+        <div class="num">№ 08</div>
+        <h3>Weekly events, <span class="accent">real bragging rights.</span></h3>
+        <p>Rotating challenges across every mode. Pro Series, Killer Instinct, Speed Match — a fresh lineup every Sunday. Stack up awards. Or play offline. Nothing forced.</p>
+        <ul class="tags"><li>Pro Series</li><li>Killer Instinct</li><li>Speed Match</li><li>Awards &amp; achievements</li></ul>
+      </div>
+      <div class="feature-shot"><img src="screenshots/iphone-1242x2688-09-awards.png" alt="Awards screen with this week's events" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── STATS ─────────────── -->
+<section>
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat"><div class="num">5</div><div class="lbl">Game variants</div></div>
+      <div class="stat"><div class="num">∞</div><div class="lbl">Generated puzzles</div></div>
+      <div class="stat"><div class="num">1/day</div><div class="lbl">Daily handcrafted</div></div>
+      <div class="stat"><div class="num">0</div><div class="lbl">Required accounts</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── FINAL CTA ─────────────── -->
+<section id="download" class="final">
+  <h2>A puzzle a day. <span class="accent">Or none.</span></h2>
+  <p class="lede">No streak-shaming. No reminders. Just a small, quiet thing to come back to when you want it.</p>
+  <div class="actions">
+    <a class="btn btn-primary" href="#">Download for iOS →</a>
+    <a class="btn btn-secondary" href="#">Get on Google Play</a>
+  </div>
+</section>
+
+<footer>
+  <div class="row">
+    <a href="/privacy.html">Privacy</a>
+    <a href="/terms.html">Terms</a>
+    <a href="mailto:y.farag84@icloud.com">Contact</a>
+  </div>
+  <div>© 2026 Sudoku Nova — built by Yasser Farag in Dubai</div>
+</footer>
+
+<script>
+  function toggleTheme(){
+    var root=document.documentElement;
+    var cur=root.getAttribute('data-theme');
+    var sysDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var eff=cur||(sysDark?'dark':'light');
+    var next=eff==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem('theme',next);}catch(e){}
+  }
+</script>
+
 </body>
 </html>
