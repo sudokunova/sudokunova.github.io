@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>You've been challenged · Sudoku Nova</title>
+<meta name="description" content="A friend solved a Sudoku Nova puzzle and challenged you to beat their time. Same puzzle, your turn.">
+<!-- Per-challenge URLs carry puzzle data; keep them out of search indexes. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F7F4EC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A0A0A" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<!-- Link previews in chat apps (static: GitHub Pages can't vary them per code). -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sudoku Nova">
+<meta property="og:title" content="You've been challenged on Sudoku Nova 🧩">
+<meta property="og:description" content="A friend solved this puzzle — can you beat their time? Same puzzle, your turn.">
+<meta property="og:image" content="https://sudokunova.github.io/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F4EC; --surface: #EFEBE0; --text: #1C1A14; --muted: #6B6455;
+    --accent: #C65D3A; --accent-soft: #FBEEE5; --border: rgba(0,0,0,.10);
+    --on-accent: #FFFFFF;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0A0A0A; --surface: #1A1816; --text: #F2EEE6; --muted: #A39C8E;
+      --accent: #E07A55; --accent-soft: #3A1E12; --border: rgba(255,255,255,.12);
+      --on-accent: #1C1A14;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh; min-height: 100dvh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 32px 16px;
+  }
+  .card { width: 100%; max-width: 420px; text-align: center; }
+  .brand {
+    display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+    color: var(--accent); font-weight: 700; font-size: 12px; letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 28px;
+  }
+  .brand img { width: 28px; height: 28px; border-radius: 7px; }
+  .badge {
+    width: 76px; height: 76px; margin: 0 auto 20px; border-radius: 50%;
+    display: grid; place-items: center; font-size: 34px;
+    background: var(--accent-soft); border: 2px solid var(--accent);
+  }
+  .eyebrow {
+    font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 11px;
+    letter-spacing: 2.4px; color: var(--accent); margin-bottom: 8px;
+  }
+  h1 { font-size: 40px; font-weight: 800; letter-spacing: -1px; line-height: 1.1; }
+  .sub { color: var(--muted); font-size: 16px; line-height: 1.55; margin: 14px auto 0; max-width: 340px; }
+  .actions { display: grid; gap: 10px; margin-top: 32px; }
+  .btn {
+    display: block; padding: 15px 18px; border-radius: 12px; text-decoration: none;
+    font-weight: 700; font-size: 16px; border: 1.5px solid var(--text);
+  }
+  .btn-primary { background: var(--text); color: var(--bg); }
+  .btn-secondary { background: transparent; color: var(--text); }
+  .hint { color: var(--muted); font-size: 13px; margin-top: 18px; line-height: 1.5; }
+  .stores { display: grid; gap: 10px; margin-top: 10px; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main class="card">
+  <a class="brand" href="/"><img src="/favicon-192.png" alt="">Sudoku Nova</a>
+
+  <div class="badge" aria-hidden="true">⚡</div>
+
+  <!-- Valid challenge -->
+  <section id="challenge" hidden>
+    <p class="eyebrow">YOU'VE BEEN CHALLENGED</p>
+    <h1 id="headline">Beat your friend</h1>
+    <p class="sub" id="detail">A friend solved this puzzle. Same puzzle, your turn.</p>
+    <div class="actions">
+      <a class="btn btn-primary" id="open" href="#">Open in Sudoku Nova</a>
+    </div>
+    <p class="hint">Don't have the app yet? Install it, then come back and tap
+      <strong>Open in Sudoku Nova</strong>.</p>
+    <div class="stores" id="stores"></div>
+  </section>
+
+  <!-- Missing / damaged code -->
+  <section id="invalid" hidden>
+    <p class="eyebrow">CHALLENGE</p>
+    <h1>Link not valid</h1>
+    <p class="sub">This challenge link is incomplete or damaged. Ask your friend to share it again.</p>
+    <div class="stores" id="stores-invalid"></div>
+  </section>
+</main>
+
+<script>
+(function () {
+  var IOS_URL = 'https://apps.apple.com/app/id6772564038';
+  var PLAY_URL = 'https://play.google.com/store/apps/details?id=com.yasserf.sudoku';
+  var ANDROID_PACKAGE = 'com.yasserf.sudoku';
+
+  // Must mirror decodeChallenge() in packages/games/sudoku/src/engine/challenge.ts:
+  // 1-<c|x>-<e|m|h|x|n>-<81 digits>-<timeSec>-<mistakes>
+  var CODE_RE = /^1-([cx])-([emhxn])-([0-9]{81})-([0-9]{1,6})-([0-9]{1,2})$/;
+  var VARIANT = { c: 'Classic', x: 'Diagonal' };
+  var DIFFICULTY = { e: 'Easy', m: 'Medium', h: 'Hard', x: 'Expert', n: 'Nightmare' };
+
+  function fmt(sec) {
+    var h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = sec % 60;
+    var ss = (s < 10 ? '0' : '') + s;
+    if (h > 0) return h + ':' + (m < 10 ? '0' : '') + m + ':' + ss;
+    return m + ':' + ss;
+  }
+
+  var ua = navigator.userAgent || '';
+  var isAndroid = /Android/i.test(ua);
+  var isIOS = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && 'ontouchend' in document);
+
+  function storeButtons(container) {
+    var buttons = [
+      { href: IOS_URL, label: 'Download for iPhone & iPad' },
+      { href: PLAY_URL, label: 'Get it on Google Play' },
+    ];
+    if (isAndroid) buttons.reverse();
+    if (isIOS) buttons = [buttons[0]];
+    if (isAndroid) buttons = [buttons[0]];
+    buttons.forEach(function (b) {
+      var a = document.createElement('a');
+      a.className = 'btn btn-secondary';
+      a.href = b.href;
+      a.textContent = b.label;
+      container.appendChild(a);
+    });
+  }
+
+  var code = new URLSearchParams(location.search).get('c') || '';
+  var m = CODE_RE.exec(code);
+  var time = m ? Number(m[4]) : 0;
+  if (!m || time > 99 * 3600) {
+    document.getElementById('invalid').hidden = false;
+    storeButtons(document.getElementById('stores-invalid'));
+    return;
+  }
+
+  var label = VARIANT[m[1]] + ' · ' + DIFFICULTY[m[2]];
+  var mistakes = Number(m[5]);
+  document.getElementById('headline').textContent = 'Beat ' + fmt(time);
+  document.getElementById('detail').textContent =
+    'A friend solved this ' + label + ' Sudoku in ' + fmt(time) +
+    (mistakes > 0
+      ? ' with ' + mistakes + ' mistake' + (mistakes === 1 ? '' : 's')
+      : ' without a single mistake') +
+    '. Same puzzle, your turn.';
+  document.title = 'Beat ' + fmt(time) + ' · Sudoku Nova challenge';
+
+  // `code` passed CODE_RE, so it is [0-9a-z-] only — safe to put in a URL.
+  var open = document.getElementById('open');
+  if (isAndroid) {
+    // Opens the app when installed, otherwise falls through to Google Play.
+    open.href = 'intent://challenge?c=' + code +
+      '#Intent;scheme=sudokunova;package=' + ANDROID_PACKAGE +
+      ';S.browser_fallback_url=' + encodeURIComponent(PLAY_URL) + ';end';
+  } else {
+    open.href = 'sudokunova://challenge?c=' + code;
+  }
+
+  document.getElementById('challenge').hidden = false;
+  storeButtons(document.getElementById('stores'));
+})();
+</script>
+</body>
+</html>
