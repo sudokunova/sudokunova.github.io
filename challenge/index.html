@@ -163,15 +163,20 @@
     '. Same puzzle, your turn.';
   document.title = 'Beat ' + fmt(time) + ' · Sudoku Nova challenge';
 
+  // Optional id of the challenge's shared record (results come back to it).
+  // Passed on only when it is exactly 20 [a-z0-9]; the link works without it.
+  var id = new URLSearchParams(location.search).get('i') || '';
+  var query = 'c=' + code + (/^[a-z0-9]{20}$/.test(id) ? '&i=' + id : '');
+
   // `code` passed CODE_RE, so it is [0-9a-z-] only — safe to put in a URL.
   var open = document.getElementById('open');
   if (isAndroid) {
     // Opens the app when installed, otherwise falls through to Google Play.
-    open.href = 'intent://challenge?c=' + code +
+    open.href = 'intent://challenge?' + query +
       '#Intent;scheme=sudokunova;package=' + ANDROID_PACKAGE +
       ';S.browser_fallback_url=' + encodeURIComponent(PLAY_URL) + ';end';
   } else {
-    open.href = 'sudokunova://challenge?c=' + code;
+    open.href = 'sudokunova://challenge?' + query;
   }
 
   document.getElementById('challenge').hidden = false;
