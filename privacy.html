@@ -32,7 +32,7 @@
     <h2>Overview</h2>
     <div class="card">
       <p>Sudoku Nova ("the App", "we", "our") is a puzzle game developed by Yasser Farag. We take your privacy seriously. This policy explains what information is collected when you use the App, how it is used, and your rights regarding that information.</p>
-      <p>The App does <strong>not</strong> require you to create an account. No name, email address, or password is ever collected by us directly.</p>
+      <p>You can play without signing in. When the App first starts, it gives you a <strong>guest account</strong>: a random account ID with no name or email address attached. The App uses it to keep a copy of your progress in the cloud. You can also sign in with Apple or Google, so your progress follows you to your other phones and tablets. We never see or store your Apple or Google password.</p>
     </div>
   </section>
 
@@ -54,16 +54,48 @@
   </section>
 
   <section>
+    <h2>Your Account</h2>
+    <div class="card">
+      <div class="highlight">What is stored with your account</div>
+      <ul>
+        <li><strong>Account ID</strong> — a random identifier created by Firebase Authentication when you first open the App.</li>
+        <li><strong>Sign in with Apple</strong> (if you use it) — your Apple user ID; the email address Apple shares with us, which can be a private relay address that hides your real one; and your name, if you choose to share it the first time you sign in.</li>
+        <li><strong>Sign in with Google</strong> (if you use it) — your Google account ID, email address, name and profile picture.</li>
+        <li><strong>Your profile</strong> — the name you choose (shown to friends in challenges) and your picture: your Google profile photo, your initials, or one of the App's built-in avatars. The App never uploads photos from your device.</li>
+        <li><strong>Your progress</strong> — puzzles played and won, best times, streaks, daily puzzles completed, trophies and awards, hints used, level and event progress, your recent solve times, and your in-app preferences (such as board theme and highlight settings).</li>
+        <li><strong>The puzzle you are playing</strong>, so you can continue it on another device.</li>
+        <li><strong>Friend challenges</strong> — when you challenge a friend, the challenge stores your account ID, your name and the puzzle. When someone plays a challenge, their name, time and number of mistakes are added to it. Anyone who has the challenge link can see the challenge and its results.</li>
+        <li><strong>Notifications</strong> — only if you turn on "Notify me about results": a notification token for your device, its platform (iOS or Android) and the App's language, used only to tell you when a friend finishes your challenge.</li>
+      </ul>
+      <div class="highlight" style="margin-top:14px;">How it is used</div>
+      <p>Account data is used to save your progress, sync it between your devices, show your name in friend challenges, and send the notifications you asked for. Your account is not linked to analytics, advertising or purchases. We do not sell it, and we do not use it for advertising.</p>
+      <div class="highlight" style="margin-top:14px;">Where it is stored</div>
+      <ul>
+        <li>Your account is managed by Google Firebase Authentication.</li>
+        <li>Your progress, puzzle in progress, challenges and notification tokens are stored in Google Cloud Firestore in the European Union ("eur3" multi-region).</li>
+        <li>Challenge notifications are prepared by Firebase Cloud Functions in the Netherlands (europe-west4). They are delivered by Firebase Cloud Messaging on Android and by the Apple Push Notification service on iOS.</li>
+      </ul>
+      <div class="highlight" id="delete-account" style="margin-top:14px;">Signing out and deleting your account</div>
+      <ul>
+        <li><strong>Sign out</strong> (at the end of the Profile screen) leaves your account and its data in place. You can sign in again at any time, and your progress also stays on the device.</li>
+        <li><strong>Delete account</strong> (Profile → Delete account) asks you to confirm with Apple or Google, then permanently deletes your account; your cloud progress and the puzzle in progress; the challenges you created, with the results friends added to them; your results on challenges you played on that device; and your notification tokens. If you used Sign in with Apple, we also tell Apple to revoke the App's access to your Apple ID. Progress stored on your device stays until you uninstall the App.</li>
+        <li><strong>If you never signed in</strong>, you can delete your guest account the same way: sign in with Apple or Google, then choose Delete account.</li>
+        <li><strong>Without the App</strong>, email <a href="mailto:y.farag84@gmail.com?subject=Delete%20my%20Sudoku%20Nova%20account">y.farag84@gmail.com</a> from the address your Apple or Google account uses (or tell us your Apple private relay address), and we will delete your account and everything stored with it within 30 days.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
     <h2>Data Stored on Your Device</h2>
     <div class="card">
-      <p>The following is stored <strong>locally on your device only</strong> and never transmitted to our servers:</p>
+      <p>The following is stored on your device. Your progress and preferences (the first three items) are also copied to your account, as described in "Your Account"; the hint token balance stays on the device:</p>
       <ul>
         <li>Game progress and saved puzzle state</li>
         <li>Personal statistics (puzzles played, won, best times, streaks)</li>
         <li>App settings and preferences</li>
         <li>Hint token balance</li>
       </ul>
-      <p>You can clear all locally stored data by uninstalling the App.</p>
+      <p>Uninstalling the App clears the data on your device. It does not delete your account; to do that, use Delete account.</p>
     </div>
   </section>
 
@@ -76,6 +108,11 @@
         <li><a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Firebase Analytics</a> — collects anonymised usage events.</li>
         <li><a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Firebase Crashlytics</a> — collects crash reports and device diagnostics.</li>
         <li><a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Firebase Remote Config</a> — delivers app configuration (e.g., contact email). No personal data is sent.</li>
+        <li><a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Firebase Authentication</a> — creates and manages your account, including Sign in with Apple and Google.</li>
+        <li><a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Cloud Firestore (Firebase)</a> — stores your account data, as described in "Your Account".</li>
+        <li><a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Firebase Cloud Functions and Firebase Cloud Messaging</a> — send challenge notifications, if you turn them on.</li>
+        <li><a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Sign in with Apple</a> and <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Sign-In</a> — let you sign in with your Apple ID or Google account. Apple and Google share your account ID, email address and, if you allow it, your name and (Google) profile picture with the App.</li>
+        <li><a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple Push Notification service</a> — delivers notifications on iOS.</li>
         <li><a href="https://www.revenuecat.com/privacy/" target="_blank" rel="noopener">RevenueCat</a> — processes in-app purchases (Pro). It receives the store receipt and a random app user ID, checks the purchase with Apple or Google, and keeps your purchase status so Pro can be restored.</li>
       </ul>
     </div>
@@ -110,14 +147,24 @@
         <li>The right to data portability</li>
         <li>The right to withdraw consent at any time (this does not affect prior lawful processing)</li>
       </ul>
-      <p>Because we do not directly store personally identifiable information, most data requests must be directed to the third-party SDKs listed above. We will assist where possible — contact us below.</p>
+      <ul>
+        <li><strong>Change your data:</strong> you can change your name and picture in the App at any time (Profile → tap your name).</li>
+        <li><strong>Delete your data:</strong> you can delete your account and the data stored with it yourself (Profile → Delete account).</li>
+        <li><strong>Other requests:</strong> for a copy of your account data, or anything else, contact us. For analytics, crash and advertising data, which is held by the services listed above, we will help where we can.</li>
+      </ul>
     </div>
   </section>
 
   <section>
     <h2>Data Retention</h2>
     <div class="card">
-      <p>Firebase Analytics data is retained for 14 months (default Google setting). Crashlytics reports are retained for 90 days. We do not retain any other personal data on our own servers.</p>
+      <p>Firebase Analytics data is retained for 14 months (default Google setting). Crashlytics reports are retained for 90 days.</p>
+      <ul>
+        <li>Account data is kept until you delete your account.</li>
+        <li>If you never sign in with Apple or Google, your guest account and everything stored with it are deleted automatically after 24 months without using the App.</li>
+        <li>Notification tokens are removed when you turn notifications off, sign out or delete your account.</li>
+        <li>A result you added to a friend's challenge is deleted when that friend deletes their account (their challenges go, with every result on them), or when you delete your account from the device you played it on.</li>
+      </ul>
     </div>
   </section>
 
